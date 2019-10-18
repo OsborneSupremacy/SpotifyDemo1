@@ -10,7 +10,9 @@ Client ID and Client Secret need to go in `appsettings.json`. Get them by regist
 
 ## Spotify user IDs
 
-Spotify does not allow usernames to be looked up by email address. A user can find their ID in the Spotify app by going to Settings --> Account.
+Spotify does not allow usernames to be looked up by email address. A user can find their username in the Spotify app by going to Settings --> Account.
+
+![Finding username](FindingUsername.gif)
 
 Spotify does allow public playlists to be queried, and in those public playlists, usernames can be viewed. I found these usernames by querying public playlists. They can be used to test this application.
 

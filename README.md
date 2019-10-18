@@ -2,6 +2,8 @@
 
 Just playing around with the Spotify API.
 
+A console application that takes in a Spotify username and calculates some metrics (using Spotify's "track features" data) about the tracks in that user's public playlists.
+
 Client ID and Client Secret need to go in `appsettings.json`. Get them by registering an app [here](https://developer.spotify.com/dashboard/applications).
 
 ## API REFERENCE

@@ -1,4 +1,6 @@
 ﻿using System;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace SpotifyDemo1.Objects
 {
@@ -8,6 +10,9 @@ namespace SpotifyDemo1.Objects
 
         public string name { get; set; }
 
+        public List<string> genres { get; set; }
+
+        [JsonIgnore]
         public int TrackCount { get; set; }
 
         public bool Equals(Artist other) =>

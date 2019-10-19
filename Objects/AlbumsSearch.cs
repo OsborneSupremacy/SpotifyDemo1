@@ -8,6 +8,5 @@ namespace SpotifyDemo1.Objects
     {
         public List<Album> items { get; set; }
 
-
     }
 }

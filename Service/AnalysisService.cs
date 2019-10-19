@@ -14,7 +14,7 @@ namespace SpotifyDemo1
                 .Distinct()
                 .ToList();
 
-        public List<Artist> GetUniqueArtists(List<Track> tracks)
+        public List<Artist> IdentifyUniqueArtists(List<Track> tracks)
         {
             var uniqueArtists = tracks
                 .Where(x => x?.album?.artists != null)
@@ -28,6 +28,34 @@ namespace SpotifyDemo1
                     tracks.Where(x => x.album.artists.Select(a => a.id).Contains(artist.id)).Count();
 
             return uniqueArtists;
+        }
+
+        public List<Genre> IdentifyUniqueGenres(List<Artist> artists)
+        {
+            List<Genre> genres = artists
+                .Where(x => x?.genres != null)
+                .SelectMany(x => x.genres)
+                .Distinct()
+                .Select(x => new Genre()
+                {
+                    name = x,
+                    TrackCount = 0
+                })
+                .ToList();
+
+            // get track counts by genre. A track will be counted in multiple
+            // genres when the artist has multiple genres
+            foreach (var genre in genres)
+            {
+                genre.TrackCount =
+                    artists
+                        .Where(x => x.genres.Contains(genre.name))
+                        .Select(x => x.TrackCount)
+                        .Sum();
+
+            }
+            
+            return genres;
         }
 
         public AudioFeatures CalculateAverageAudioFeatures(List<AudioFeatures> audioFeatures) =>

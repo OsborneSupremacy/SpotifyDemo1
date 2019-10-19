@@ -24,7 +24,11 @@ namespace SpotifyDemo1
         public void WriteLine(string input) =>
             Console.WriteLine(input);
 
-        public void WriteMetrics(List<Artist> uniqueArtists, List<AudioFeatures> audioFeatures, AudioFeatures avgAudioFeatures)
+        public void WriteMetrics(
+            List<Artist> uniqueArtists, 
+            List<Genre> genres,
+            List<AudioFeatures> audioFeatures,
+            AudioFeatures avgAudioFeatures)
         {
             WriteLine();
             WriteLine("METRICS:");
@@ -39,6 +43,17 @@ namespace SpotifyDemo1
                 WriteLine($"{++i}. {artist.name} - {artist.TrackCount} tracks");
                 if (i >= 3) break;
             }
+            WriteLine();
+
+            WriteLine("Top genres (tracks can have multiple genres):");
+            WriteLine();
+            int g = 0;
+            foreach (var genre in genres.OrderByDescending(x => x.TrackCount))
+            {
+                WriteLine($"{++g}. {genre.name} - {genre.TrackCount} tracks");
+                if (g >= 3) break;
+            }
+            WriteLine();
 
             WriteLine();
             WriteLine($"Number of tracks with Spotify Audio Features data: {audioFeatures.Count()}");

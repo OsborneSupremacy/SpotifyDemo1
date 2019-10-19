@@ -10,15 +10,7 @@ namespace SpotifyDemo1.Objects
 
         public class Artists
         {
-            public List<artist> items { get; set; }
-
-            public class artist
-            {
-                public string id { get; set; }
-
-                public string name { get; set; }
-            }
-
+            public List<Artist> items { get; set; }
         }
     }
 }

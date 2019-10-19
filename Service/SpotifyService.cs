@@ -53,13 +53,8 @@ namespace SpotifyDemo1
             var tasks = new List<Task<AudioFeatures>>();
 
             int i = 0;
-            foreach (var track in tracks)
+            foreach (var track in tracks.Where(x => !string.IsNullOrEmpty(x.id)))
             {
-                if (string.IsNullOrEmpty(track.id))
-                {
-                    Console.WriteLine($"Track `{++i}` has no ID, skipping");
-                    continue;
-                }
                 Console.WriteLine($"Getting audio features for track `{track.id}`, {++i} / {tracks.Count}");
                 tasks.Add(GetAudioFeatures(track.id));
             }
@@ -103,6 +98,27 @@ namespace SpotifyDemo1
         {
             string url = $"https://api.spotify.com/v1/playlists/{playlistID}/tracks?limit={limit}";
             return JsonConvert.DeserializeObject<PlaylistMeta>(await apiRequest.Get(httpClient, url));
+        }
+
+        public List<Artist> GetAllArtists(List<Artist> artists)
+        {
+            var tasks = new List<Task<Artist>>();
+
+            int i = 0;
+            foreach(var artist in artists.Where(x => !string.IsNullOrEmpty(x.id))) {
+                Console.WriteLine($"Getting artist info for artist `{artist.id}`, {++i} / {artists.Count}");
+                tasks.Add(GetArtist(artist.id, artist.TrackCount));
+            }
+
+            return Task.WhenAll(tasks).GetAwaiter().GetResult().Where(x => x != null).ToList();
+        }
+
+        public async Task<Artist> GetArtist(string artistID, int trackCount) 
+        {
+            string url = $"https://api.spotify.com/v1/artists/{artistID}";
+            var artist = JsonConvert.DeserializeObject<Artist>(await apiRequest.Get(httpClient, url));
+            artist.TrackCount = trackCount;
+            return artist;
         }
     }
 }

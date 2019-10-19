@@ -8,6 +8,12 @@ namespace SpotifyDemo1
 {
     public class ConsoleService
     {
+        public ConfigurationService configuration { get; set; }
+
+        public ConsoleService(ConfigurationService configurationService) {
+            configuration = configurationService;
+        }
+
         public string PromptForUsername()
         {
             WriteLine();
@@ -41,7 +47,7 @@ namespace SpotifyDemo1
             foreach (var artist in uniqueArtists.OrderByDescending(x => x.TrackCount))
             {
                 WriteLine($"{++i}. {artist.name} - {artist.TrackCount} tracks");
-                if (i >= 3) break;
+                if (i >= configuration.Settings.MetricSettings.TopArtistsToShow) break;
             }
             WriteLine();
 
@@ -51,7 +57,7 @@ namespace SpotifyDemo1
             foreach (var genre in genres.OrderByDescending(x => x.TrackCount))
             {
                 WriteLine($"{++g}. {genre.name} - {genre.TrackCount} tracks");
-                if (g >= 3) break;
+                if (g >= configuration.Settings.MetricSettings.TopGenresToShow) break;
             }
             WriteLine();
 

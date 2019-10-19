@@ -2,26 +2,27 @@
 using System.IO;
 using System.Text;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.FileExtensions;
-using Microsoft.Extensions.Configuration.Json;
 using SpotifyDemo1.Objects;
 
 namespace SpotifyDemo1
 {
     public class ConfigurationService
     {
-        public string GetUserNameAndPasswordBase64()
+        public Settings Settings { get; private set; }
+
+        public ConfigurationService() 
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json");
 
             var config = builder.Build();
+            Settings = config.Get<Settings>();
+        }
 
-            var apiKeys = config.GetSection("apikeys").Get<ApiKeys>();
-
-            var apiKeysBytes = Encoding.ASCII.GetBytes($"{apiKeys.ClientId}:{apiKeys.ClientSecret}");
-
+        public string GetUserNameAndPasswordBase64()
+        {
+            var apiKeysBytes = Encoding.ASCII.GetBytes($"{Settings.ApiKeys.ClientId}:{Settings.ApiKeys.ClientSecret}");
             return Convert.ToBase64String(apiKeysBytes);
         }
     }

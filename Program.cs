@@ -11,8 +11,8 @@ namespace SpotifyDemo1
         static bool UserSearch()
         {
             var config = new ConfigurationService();
-            var console = new ConsoleService();
-            var apirequest = new ApiRequestService(console);
+            var console = new ConsoleService(config);
+            var apirequest = new ApiRequestService(console, config);
             var spotify = new SpotifyService(console, config, apirequest);
             var analysis = new AnalysisService();
 

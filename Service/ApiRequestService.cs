@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SpotifyDemo1.Objects;
 
 namespace SpotifyDemo1
 {
@@ -8,21 +9,23 @@ namespace SpotifyDemo1
     {
         public ConsoleService console { get; set; }
 
-        public ApiRequestService(ConsoleService consoleService) {
+        public ConfigurationService configuration { get; set; }
+
+        public ApiRequestService(ConsoleService consoleService, ConfigurationService configurationService) {
             console = consoleService;
+            configuration = configurationService;
         }
 
         public async Task<string> Get(HttpClient httpClient, string url)
         {
             bool wait = false;
             string responseJson = string.Empty;
-            int maxRetries = 10;
             int attempt = 1;
 
-            while(string.IsNullOrEmpty(responseJson) && attempt <= maxRetries) 
+            while(string.IsNullOrEmpty(responseJson) && attempt <= configuration.Settings.RequestSettings.MaxAttempts) 
             {
                 if(wait) { 
-                    console.WriteLine($"Rate limiter hit. Waiting. Attempt {attempt} / {maxRetries}.");
+                    console.WriteLine($"Rate limit reached; Wait and retry {attempt} / {configuration.Settings.RequestSettings.MaxAttempts}");
                     await Task.Delay(5000); 
                 }
                 using (var httpRequest = new HttpRequestMessage(HttpMethod.Get, url)) 

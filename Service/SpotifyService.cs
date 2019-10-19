@@ -14,14 +14,20 @@ namespace SpotifyDemo1
 
         public ConfigurationService configuration { get; set; }
 
+        public ApiRequestService apiRequest { get; set; }
+
         protected HttpClient httpClient { get; set; }
 
         protected string token { get; set; }
 
-        public SpotifyService(ConsoleService consoleService, ConfigurationService configurationService)
+        public SpotifyService(
+            ConsoleService consoleService, 
+            ConfigurationService configurationService,
+            ApiRequestService apiRequestService)
         {
             console = consoleService;
             configuration = configurationService;
+            apiRequest = apiRequestService;
 
             token = GetSpotifyToken().access_token;
             httpClient = new HttpClient();
@@ -36,7 +42,7 @@ namespace SpotifyDemo1
             var url = "https://accounts.spotify.com/api/token";
 
             return JsonConvert.DeserializeObject<Token>
-                (ApiRequestService.PostForm(postClient, url,
+                (apiRequest.PostForm(postClient, url,
                 new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("grant_type", "client_credentials") } )
                 .GetAwaiter()
                 .GetResult());
@@ -64,13 +70,13 @@ namespace SpotifyDemo1
         public async Task<AudioFeatures> GetAudioFeatures(string trackID)
         {
             string url = $"https://api.spotify.com/v1/audio-features/{trackID}";
-            return JsonConvert.DeserializeObject<AudioFeatures>(await ApiRequestService.Get(httpClient, url));
+            return JsonConvert.DeserializeObject<AudioFeatures>(await apiRequest.Get(httpClient, url));
         }
 
         public PlaylistSearch GetPlaylists(string username, out bool anyFound)
         {
             var url = $"https://api.spotify.com/v1/users/{username}/playlists";
-            var playlists = JsonConvert.DeserializeObject<PlaylistSearch>(ApiRequestService.Get(httpClient, url).GetAwaiter().GetResult());
+            var playlists = JsonConvert.DeserializeObject<PlaylistSearch>(apiRequest.Get(httpClient, url).GetAwaiter().GetResult());
 
             anyFound = (playlists?.items?.Any() ?? false);
 
@@ -96,7 +102,7 @@ namespace SpotifyDemo1
         public async Task<PlaylistMeta> GetPlaylistMeta(string playlistID, int limit)
         {
             string url = $"https://api.spotify.com/v1/playlists/{playlistID}/tracks?limit={limit}";
-            return JsonConvert.DeserializeObject<PlaylistMeta>(await ApiRequestService.Get(httpClient, url));
+            return JsonConvert.DeserializeObject<PlaylistMeta>(await apiRequest.Get(httpClient, url));
         }
     }
 }

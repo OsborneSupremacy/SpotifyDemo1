@@ -6,23 +6,43 @@ namespace SpotifyDemo1
 {
     public class ApiRequestService
     {
-        public static async Task<string> Get(HttpClient httpClient, string url)
-        {
-            using (var httpRequest = new HttpRequestMessage(HttpMethod.Get, url))
-            using (var response = await httpClient.SendAsync(httpRequest))
-            {
-                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                    return string.Empty;
-                if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
-                {
-                    await Task.Delay(5000);
-                    return string.Empty;
-                }
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
-            }
+        public ConsoleService console { get; set; }
+
+        public ApiRequestService(ConsoleService consoleService) {
+            console = consoleService;
         }
-        public static async Task<string> PostForm(HttpClient httpClient, string url, List<KeyValuePair<string, string>> nameValueList)
+
+        public async Task<string> Get(HttpClient httpClient, string url)
+        {
+            bool wait = false;
+            string responseJson = string.Empty;
+            int maxRetries = 10;
+            int attempt = 1;
+
+            while(string.IsNullOrEmpty(responseJson) && attempt <= maxRetries) 
+            {
+                if(wait) { 
+                    console.WriteLine($"Rate limiter hit. Waiting. Attempt {attempt} / {maxRetries}.");
+                    await Task.Delay(5000); 
+                }
+                using (var httpRequest = new HttpRequestMessage(HttpMethod.Get, url)) 
+                {
+                    using (var response = await httpClient.SendAsync(httpRequest))
+                    {
+                        wait = (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests);
+                        if(wait) {
+                            attempt++;
+                            continue;
+                        }
+                        response.EnsureSuccessStatusCode();
+                        responseJson = await response.Content.ReadAsStringAsync();
+                    }
+                }
+            }
+            return responseJson;
+        }
+
+        public async Task<string> PostForm(HttpClient httpClient, string url, List<KeyValuePair<string, string>> nameValueList)
         {
             using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, url))
             {

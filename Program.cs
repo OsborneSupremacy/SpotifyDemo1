@@ -12,9 +12,9 @@ namespace SpotifyDemo1
         {
             var config = new ConfigurationService();
             var console = new ConsoleService();
-            var spotify = new SpotifyService(console, config);
+            var apirequest = new ApiRequestService(console);
+            var spotify = new SpotifyService(console, config, apirequest);
             var analysis = new AnalysisService();
-
 
             var username = console.PromptForUsername();
 

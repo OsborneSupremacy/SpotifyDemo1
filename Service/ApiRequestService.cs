@@ -37,6 +37,9 @@ namespace SpotifyDemo1
                             attempt++;
                             continue;
                         }
+                        // if Spotify returns a 404, no need to keep trying
+                        if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                            return string.Empty;
                         response.EnsureSuccessStatusCode();
                         responseJson = await response.Content.ReadAsStringAsync();
                     }

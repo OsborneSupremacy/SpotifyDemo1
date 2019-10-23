@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using SpotifyDemo1.Objects;
+using System.Linq;
+using System;
 
 namespace SpotifyDemo1
 {
@@ -18,23 +19,22 @@ namespace SpotifyDemo1
 
         public async Task<string> Get(HttpClient httpClient, string url)
         {
-            bool wait = false;
+
             string responseJson = string.Empty;
             int attempt = 1;
 
             while(string.IsNullOrEmpty(responseJson) && attempt <= configuration.Settings.RequestSettings.MaxAttempts) 
             {
-                if(wait) { 
-                    console.WriteLine($"Rate limit reached; Wait and retry {attempt} / {configuration.Settings.RequestSettings.MaxAttempts}");
-                    await Task.Delay(5000); 
-                }
                 using (var httpRequest = new HttpRequestMessage(HttpMethod.Get, url)) 
                 {
                     using (var response = await httpClient.SendAsync(httpRequest))
                     {
-                        wait = (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests);
+                        var wait = (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests);
                         if(wait) {
+                            var waitMs = response.Headers.RetryAfter.Delta.Value.TotalMilliseconds;
                             attempt++;
+                            console.WriteLine($"Rate limit exceeded; Try again in {waitMs} ms. {attempt} / {configuration.Settings.RequestSettings.MaxAttempts}");
+                            await Task.Delay((int)waitMs);
                             continue;
                         }
                         // if Spotify returns a 404, no need to keep trying

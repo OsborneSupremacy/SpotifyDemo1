@@ -64,7 +64,8 @@ namespace SpotifyDemo1
                 danceability = audioFeatures.Select(x => x.danceability).Average(),
                 energy = audioFeatures.Select(x => x.energy).Average(),
                 loudness = audioFeatures.Select(x => x.loudness).Average(),
-                tempo = audioFeatures.Select(x => x.tempo).Average()
+                tempo = audioFeatures.Select(x => x.tempo).Average(),
+                valence = audioFeatures.Select(x => x.valence).Average(),
             };
 
     }

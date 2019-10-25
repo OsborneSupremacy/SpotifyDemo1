@@ -33,7 +33,7 @@ namespace SpotifyDemo1
                         if(wait) {
                             var waitMs = response.Headers.RetryAfter.Delta.Value.TotalMilliseconds;
                             attempt++;
-                            console.WriteLine($"Rate limit exceeded; Try again in {waitMs} ms. {attempt} / {configuration.Settings.RequestSettings.MaxAttempts}");
+                            console.WriteLine($"Rate limit exceeded; Try again in {waitMs} ms; Attempt {attempt} / {configuration.Settings.RequestSettings.MaxAttempts}");
                             await Task.Delay((int)waitMs);
                             continue;
                         }

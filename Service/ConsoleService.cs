@@ -64,10 +64,11 @@ namespace SpotifyDemo1
             WriteLine();
             WriteLine($"Number of tracks with Spotify Audio Features data: {audioFeatures.Count()}");
             WriteLine();
-            WriteLine($"Avg Danceability (0 = least, 1 = most)        : {avgAudioFeatures.danceability}");
-            WriteLine($"Avg Energy (0 = least, 1 = most)              : {avgAudioFeatures.energy}");
-            WriteLine($"Avg Loudness (dB, range is -60 to 0)          : {avgAudioFeatures.loudness}");
-            WriteLine($"Avg Tempo (BPM, range is 0 to 250)            : {avgAudioFeatures.tempo}");
+            WriteLine($"Avg Danceability (0 = least, 1 = most)          : {avgAudioFeatures.danceability}");
+            WriteLine($"Avg Energy (0 = least, 1 = most)                : {avgAudioFeatures.energy}");
+            WriteLine($"Avg Loudness (dB, range is -60 to 0)            : {avgAudioFeatures.loudness}");
+            WriteLine($"Avg Tempo (BPM, range is 0 to 250)              : {avgAudioFeatures.tempo}");
+            WriteLine($"Avg Valence (0 = least, 1 = most positive)      : {avgAudioFeatures.valence}");
         }
 
     }

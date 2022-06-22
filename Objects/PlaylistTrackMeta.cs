@@ -1,7 +1,6 @@
-﻿namespace SpotifyDemo1.Objects
+﻿namespace SpotifyDemo1.Objects;
+
+public class PlaylistTrackMeta
 {
-    public class PlaylistTrackMeta
-    {
-        public Track track { get; set; }
-    }
+    public Track track { get; set; }
 }

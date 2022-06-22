@@ -19,6 +19,11 @@ Spotify does not allow usernames to be looked up by email address. A user can fi
 Spotify does allow public playlists to be queried, and in those public playlists, usernames can be viewed. I found these usernames by querying public playlists. They can be used to test this application.
 
 ```
+ozzy
+metal
+headbanger
+rap
+mozart
 jackshurtleff
 kayleehall3221
 luw8oybw1obuzkidx1b93k4dg
@@ -27,4 +32,10 @@ ldb_1997
 hyarleque
 xgpbjy65q1almq65seqtss5ka
 zr037nrv0wedyejme4m394p7u
+evil -- getting error (404) when limit is 50
 ```
+
+
+
+
+https://web.stanford.edu/~kjytay/courses/stats32-aut2018/Session%208/Spotify_final.html

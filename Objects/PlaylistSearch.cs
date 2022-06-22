@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SpotifyDemo1.Objects
+namespace SpotifyDemo1.Objects;
+
+public class PlaylistSearch
 {
-    public class PlaylistSearch
-    {
-        public List<Playlist> items { get; set; }
+    public List<Playlist> items { get; set; }
 
-
-    }
 
 }
+

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Linq;
-using System;
 
 namespace SpotifyDemo1;
 
